@@ -7,7 +7,8 @@
         <title>Movie App</title>
     </head>
     <body>
-        <h1>Hello World</h1>
         <div id="application"></div>
+
+        <script src="/bundle.js"></script>
     </body>
 </html>

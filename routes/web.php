@@ -12,13 +12,19 @@
 */
 
 $router->group([
-    'prefix' => 'api'
+    'prefix' => 'api',
+    'middleware' => 'response-cache'
 ], function () use ($router){
     $router->get('/', function () use ($router){
         return $router->app->version();
     });
+
+    $router->get('movies/search', 'MovieController@search');
+    $router->get('movies/upcoming', 'MovieController@upcoming');
+    $router->get('movie/{id}', 'MovieController@retrieve');
 });
 
-$router->get('/', function () {
+// Send all other routes to React
+$router->get('/{any:.*}', function () {
     return view('index');
 });

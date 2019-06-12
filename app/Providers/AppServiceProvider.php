@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use App\Services\Contracts\MovieService;
+use App\Services\TMDBMovieService;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -13,6 +15,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        $this->app->bind(MovieService::class, TMDBMovieService::class);
     }
 }
