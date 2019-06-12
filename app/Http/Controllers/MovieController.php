@@ -38,9 +38,11 @@ class MovieController extends Controller
         return response()->json($movie);
     }
 
-    public function upcoming()
+    public function upcoming(Request $request)
     {
-        $movies = $this->service->getUpcoming();
+        $howMany = $request->input('howMany') ?? 30;
+
+        $movies = $this->service->getUpcoming($howMany);
 
         return response()->json($movies);
     }

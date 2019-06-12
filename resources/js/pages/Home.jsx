@@ -50,13 +50,11 @@ const Home = () => {
       .get('/api/movies/upcoming')
       .then(({data}) => {
         setLoading(false);
-        setMovies(data.results)
+        setMovies(data)
       });
   },[]);
 
   const handleSearch = searchQuery => {
-    console.log('Searching....');
-
     if (!searchQuery) {
       setSearchResult(null);
       return;

@@ -2,6 +2,8 @@ import React from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 
+import Loader from '../components/Loader';
+
 const useRetrieveMovie = id => {
   const [movie, setMovie] = React.useState(null);
 
@@ -24,23 +26,48 @@ const MoviePageContainer = styled.div`
   padding: 15px 25px;
 
   background-color: #2b2b2b;
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+  }
+
+  @media (min-width: 1024px) {
+    font-size: 1.25rem;
+  }
 `;
 
-const MoviePoster = styled.img`
+const Poster = styled.img`
   width: 80%;
 
   @media(min-width: 768px) {
-    width: 60%;
+    width: 40%;
+    padding: 0 15px;
   }
 `;
-const MovieTitle = styled.h1`
+const Title = styled.h1`
   color: #fff;
   text-align: center;
-`
-const MovieOverview = styled.p`
-  padding: 10px 16px;
 
+  @media (min-width: 768px) {
+    text-align: left;
+  }
+`
+const Overview = styled.p`
   color: #fff;
+`;
+
+const ReleaseDate = styled.div`
+  color: #fff;
+  letter-spacing: 1px;
+`;
+
+const Genres = styled.p`
+  color: #fff;
+  text-align: center;
+
+  @media (min-width: 768px) {
+    text-align: left;
+  }
 `;
 
 const MoviePage = ({ match: { params: { id } } }) => {
@@ -54,14 +81,19 @@ const MoviePage = ({ match: { params: { id } } }) => {
 
   return (
     <MoviePageContainer>
-      <MoviePoster src={`http://image.tmdb.org/t/p/w600_and_h900_bestv2${movie.poster_path}`} alt={`Pôster de ${movie.title}`}/>
+      <Poster src={`http://image.tmdb.org/t/p/w600_and_h900_bestv2${movie.poster_path}`} alt={`Pôster de ${movie.title}`}/>
 
-      <MovieTitle>{movie.title}</MovieTitle>
-      <h4 style={{padding: '10px 16px', backgroundColor: 'white'}}>{releaseDate.toLocaleDateString('pt-BR')}</h4>
+      <div>
+        <Title>{movie.title}</Title>
+        <ReleaseDate>{releaseDate.toLocaleDateString('pt-BR')}</ReleaseDate>
 
-      <MovieOverview>
-        {movie.overview}
-      </MovieOverview>
+        <Genres>
+          {movie.genres.reduce((acc, genre) => [...acc, genre.name], []).join(' | ')}
+        </Genres>
+        <Overview>
+          {movie.overview}
+        </Overview>
+      </div>
     </MoviePageContainer>
   )
 };

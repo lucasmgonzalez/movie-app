@@ -12,6 +12,8 @@ class TMDBMovieService implements MovieService
 
     const POSTER_PATH = 'http://image.tmdb.org/t/p/w600_and_h900_bestv2';
 
+    const MOVIES_PER_PAGE = 20;
+
     public function __construct()
     {
         $this->apiKey = env('TMDB_API_KEY');
@@ -30,7 +32,7 @@ class TMDBMovieService implements MovieService
 
         $response = $this->httpClient->request($method, $uri, $options);
 
-        $data = json_decode($response->getBody(),);
+        $data = json_decode($response->getBody(), true);
 
         if ($response->getStatusCode() !== 200) {
             throw  new \Exception($data['status_message'], $data['status_code']);
@@ -44,9 +46,19 @@ class TMDBMovieService implements MovieService
         return $this->makeRequest('GET', "movie/$id");
     }
 
-    public function getUpcoming(int $limit = 20, int $page = 1)
+    public function getUpcoming(int $howMany = 20, int $page = 1)
     {
-        return $this->makeRequest('GET', 'movie/upcoming');
+        $numberOfPagesToGet = ceil($howMany / self::MOVIES_PER_PAGE);
+
+        $result = [];
+
+        for ($page = 1; $page <= $numberOfPagesToGet; $page++) {
+            $response = $this->makeRequest('GET', "movie/upcoming", ['query' => ['page' => $page]]);
+
+            $result = array_merge($result, $response['results']);
+        }
+
+        return array_slice($result, 0, $howMany);
     }
 
     public function searchByName(string $query)

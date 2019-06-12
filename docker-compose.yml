@@ -33,6 +33,5 @@ services:
       - "MYSQL_ROOT_PASSWORD=secret"
     ports:
       - "33061:3306"
-
 volumes:
   dbdata:

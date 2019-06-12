@@ -12,7 +12,8 @@
 */
 
 $router->group([
-    'prefix' => 'api'
+    'prefix' => 'api',
+    'middleware' => 'response-cache'
 ], function () use ($router){
     $router->get('/', function () use ($router){
         return $router->app->version();
