@@ -19,7 +19,6 @@ $router->group([
         return $router->app->version();
     });
 
-    $router->get('movies', 'MovieController@get');
     $router->get('movies/search', 'MovieController@search');
     $router->get('movies/upcoming', 'MovieController@upcoming');
     $router->get('movie/{id}', 'MovieController@retrieve');
